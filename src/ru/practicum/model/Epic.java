@@ -31,7 +31,7 @@ public class Epic extends Task {
     public String toString() {
         return this.getClass() + "{\n" +
                 "   ID = " + id + '\n' +
-                "   subtasks = " + subtasksList.toString() + '\n' +
+                "   subtasks = " + subtasksList + '\n' +
                 "   name = " + name + '\n' +
                 "   description = " + description + '\n' +
                 "   status = " + status + '\n' +
