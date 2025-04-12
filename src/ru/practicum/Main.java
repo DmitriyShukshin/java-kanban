@@ -1,11 +1,11 @@
 package ru.practicum;
 
-import ru.practicum.manager.TaskManager;
+import ru.practicum.manager.InMemoryTaskManager;
 import ru.practicum.model.*;
 
 class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
         int taskID;
         int epicID;
         int subtaskID;
@@ -14,7 +14,7 @@ class Main {
         Task testTask2 = new Task("Задача 2", "Тестовая задача 2");
         Task testTask3 = new Task("Задача 3", "Тестовая задача 3");
 
-        taskID = taskManager.addTask(testTask1);
+        taskID = taskManager.addNewTask(testTask1);
 
         Epic testEpic1 = new Epic("Эпик 1", "Тестовый эпик 1");
         Epic testEpic2 = new Epic("Эпик 2", "Тестовый эпик 2");
@@ -28,9 +28,9 @@ class Main {
 
         System.out.println("\nДобавляем подзадачи в первый эпик");
 
-        taskManager.addSubtask(testSubtask1);
-        taskManager.addSubtask(testSubtask2);
-        taskManager.addSubtask(testSubtask3);
+        taskManager.addNewSubtask(testSubtask1);
+        taskManager.addNewSubtask(testSubtask2);
+        taskManager.addNewSubtask(testSubtask3);
 
         epicID = taskManager.addEpic(testEpic2);
 
@@ -39,10 +39,10 @@ class Main {
         Subtask testSubtask6 = new Subtask("Подзадача 6", "Тестовая подзадача 6", epicID);
 
         System.out.println("\nДобавляем подзадачи во второй эпик и ставим разные статусы");
-        taskManager.addSubtask(testSubtask4);
-        subtaskID = taskManager.addSubtask(testSubtask5);
+        taskManager.addNewSubtask(testSubtask4);
+        subtaskID = taskManager.addNewSubtask(testSubtask5);
         taskManager.getSubtask(subtaskID).setStatus(Status.IN_PROGRESS);
-        subtaskID = taskManager.addSubtask(testSubtask6);
+        subtaskID = taskManager.addNewSubtask(testSubtask6);
         taskManager.getSubtask(subtaskID).setStatus(Status.DONE);
         taskManager.updateSubtask(testSubtask6);
 
@@ -53,11 +53,11 @@ class Main {
         Subtask testSubtask9 = new Subtask("Подзадача 9", "Тестовая подзадача 9", epicID);
 
         System.out.println("\nДобавляем подзадачи в третий эпик и меняем все статусы на DONE");
-        subtaskID = taskManager.addSubtask(testSubtask7);
+        subtaskID = taskManager.addNewSubtask(testSubtask7);
         taskManager.getSubtask(subtaskID).setStatus(Status.DONE);
-        subtaskID = taskManager.addSubtask(testSubtask8);
+        subtaskID = taskManager.addNewSubtask(testSubtask8);
         taskManager.getSubtask(subtaskID).setStatus(Status.DONE);
-        subtaskID = taskManager.addSubtask(testSubtask9);
+        subtaskID = taskManager.addNewSubtask(testSubtask9);
         taskManager.getSubtask(subtaskID).setStatus(Status.DONE);
         taskManager.updateSubtask(testSubtask7);
 
@@ -71,10 +71,11 @@ class Main {
         System.out.println(taskManager.getSubtask(subtaskID));
         System.out.println(taskManager.getEpic(epicID));
         System.out.println("\nПечатаем все задачи\n");
-        System.out.println(taskManager.getAllTasks());
+        System.out.println(taskManager.getTasks());
         System.out.println("\nПечатаем все подзадачи\n");
         System.out.println(taskManager.getAllSubtasks());
         System.out.println("\nПечатаем все эпики\n");
         System.out.println(taskManager.getAllEpics());
+        System.out.println("ИСТОРИЯ ______________________________\n" + taskManager.getHistory());
     }
 }
