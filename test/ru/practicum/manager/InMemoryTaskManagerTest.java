@@ -1,11 +1,8 @@
+package ru.practicum.manager;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import ru.practicum.manager.Managers;
-import ru.practicum.manager.TaskManager;
-import ru.practicum.model.Epic;
-import ru.practicum.model.Status;
-import ru.practicum.model.Subtask;
-import ru.practicum.model.Task;
+import ru.practicum.model.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,16 +41,27 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void oldVersionOfTaskFromHistoryTest() {
+    void addHistoryAfterGettingTest() {
         int taskId;
+        int epicId;
+        int subtaskId;
 
-        Task task1 = new Task("Задача 1", "Тестовая задача 1");
-        taskId = manager.addNewTask(task1);
+        Task task = new Task("Задача", "Тестовая задача");
+        taskId = manager.addNewTask(task);
+        Epic epic = new Epic("Эпик", "Тестовый эпик");
+        epicId = manager.addEpic(epic);
+        Subtask subtask = new Subtask("Подзадача", "Тестовая подзадача", epicId);
+        subtaskId = manager.addNewSubtask(subtask);
+
         manager.getTask(taskId);
-        manager.updateTask(new Task(task1.getName(), task1.getDescription(), task1.getId(), Status.IN_PROGRESS));
-        manager.getTask(taskId);
-        assertNotEquals(manager.getHistory().getFirst().getStatus(), manager.getHistory().getLast().getStatus(),
-                "Не сохранено состояние на момент получения задачи");
+        assertEquals(1, manager.getHistory().size(),
+                "При получении, задача не была добавлена в историю.");
+        manager.getEpic(epicId);
+        assertEquals(2, manager.getHistory().size(),
+                "При получении, эпик не был добавлен в историю.");
+        manager.getSubtask(subtaskId);
+        assertEquals(3, manager.getHistory().size(),
+                "При получении, подзадача не была добавлена в историю");
     }
 
     @Test
