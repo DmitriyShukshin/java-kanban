@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 import ru.practicum.model.Status;
 import ru.practicum.model.Task;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
@@ -28,23 +26,56 @@ public class InMemoryHistoryManagerTest {
     }
 
     @Test
-    void  historySizeAndRemovingFirstTest() {
-        ArrayList<Task> tasks = new ArrayList<>(11);
-        for (int i = 0; i <= 10; i++) {
-            tasks.add(new Task("Name " + i, "description " + i, i));
-            manager.add(tasks.get(i));
-        }
-        assertNotEquals(tasks.getFirst(), manager.getHistory().getFirst());
-        assertEquals(10, manager.getHistory().size());
+    void likedListRemoveLastNodeTest() {
+        Task task1 = new Task("Задача 1", "Тестовая задача 1", Status.NEW);
+        manager.add(task1);
+        manager.remove(task1.getId());
+        assertNotEquals(manager.getHistory().getFirst(), null,
+                "Не удаляется единственный элемент.");
     }
 
     @Test
-    void oldVersionOfTaskFromHistoryTest() {
-        Task task1 = new Task("Задача 1", "Тестовая задача 1", Status.NEW);
+    void linkedListRemoveHeadTest() {
+        Task task1 = new Task("Задача 1", "Тестовая задача 1", 1, Status.NEW);
+        Task task2 = new Task("Задача 2", "Тестовая задача 2", 2, Status.NEW);
+        Task task3 = new Task("Задача 3", "Тестовая задача 3", 3, Status.NEW);
         manager.add(task1);
-        task1.setStatus(Status.IN_PROGRESS);
+        manager.add(task2);
+        manager.add(task3);
+        assertEquals(3, manager.getHistory().size());
+        manager.remove(task1.getId());
+        assertEquals(2, manager.getHistory().size());
+        assertEquals(task2, manager.getHistory().getFirst());
+        assertEquals(task3, manager.getHistory().getLast());
+    }
+
+    @Test
+    void linkedListRemoveTeilTest() {
+        Task task1 = new Task("Задача 1", "Тестовая задача 1", 1, Status.NEW);
+        Task task2 = new Task("Задача 2", "Тестовая задача 2", 2, Status.NEW);
+        Task task3 = new Task("Задача 3", "Тестовая задача 3", 3, Status.NEW);
         manager.add(task1);
-        assertNotEquals(manager.getHistory().getFirst().getStatus(), manager.getHistory().getLast().getStatus(),
-                "Не сохранено состояние на момент получения задачи");
+        manager.add(task2);
+        manager.add(task3);
+        assertEquals(3, manager.getHistory().size());
+        manager.remove(task3.getId());
+        assertEquals(2, manager.getHistory().size());
+        assertEquals(task1, manager.getHistory().getFirst());
+        assertEquals(task2, manager.getHistory().getLast());
+    }
+
+    @Test
+    void linkedListRemoveMiddleTest() {
+        Task task1 = new Task("Задача 1", "Тестовая задача 1", 1, Status.NEW);
+        Task task2 = new Task("Задача 2", "Тестовая задача 2", 2, Status.NEW);
+        Task task3 = new Task("Задача 3", "Тестовая задача 3", 3, Status.NEW);
+        manager.add(task1);
+        manager.add(task2);
+        manager.add(task3);
+        assertEquals(3, manager.getHistory().size());
+        manager.remove(task2.getId());
+        assertEquals(2, manager.getHistory().size());
+        assertEquals(task1, manager.getHistory().getFirst());
+        assertEquals(task3, manager.getHistory().getLast());
     }
 }
