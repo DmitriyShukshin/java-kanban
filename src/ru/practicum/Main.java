@@ -64,7 +64,6 @@ class Main {
         System.out.println("\nПроверяем что получилось с эпиками и подзадачами\n");
         System.out.println(taskManager.getAllEpics());
         System.out.println(taskManager.getAllSubtasks());
-        //тесты не очень получились в следующем спринте будут юнит тесты
 
         System.out.println("\nУдаляем подзадачу и проверяем её и эпик\n");
         taskManager.removeSubtask(subtaskID);
