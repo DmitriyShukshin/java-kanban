@@ -65,7 +65,7 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
-    void RemoveTaskTest() {
+    void removeTaskTest() {
         Task task1 = new Task("Задача 1", "Тестовая задача 1", 1, Status.NEW);
         Task task2 = new Task("Задача 2", "Тестовая задача 2", 2, Status.NEW);
         Task task3 = new Task("Задача 3", "Тестовая задача 3", 3, Status.NEW);

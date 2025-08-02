@@ -1,6 +1,8 @@
 package ru.practicum.manager;
 
+import ru.practicum.model.Epic;
 import ru.practicum.model.Node;
+import ru.practicum.model.Subtask;
 import ru.practicum.model.Task;
 
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private HashMap<Integer, Node<Task>> history;
+    private final HashMap<Integer, Node<Task>> history;
     private Node<Task> head;
     private Node<Task> tail;
 
@@ -25,7 +27,13 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (task != null) {
             history.remove(task.getId());
-            linkLast(new Node<>(new Task(task.getName(), task.getDescription(), task.getId(), task.getStatus())));
+            if (task instanceof Epic epic) {
+                linkLast(new Node<>(new Epic(epic)));
+            } else if (task instanceof Subtask subtask) {
+                linkLast(new Node<>(new Subtask(subtask)));
+            } else {
+                linkLast(new Node<>(new Task(task)));
+            }
         }
     }
 
