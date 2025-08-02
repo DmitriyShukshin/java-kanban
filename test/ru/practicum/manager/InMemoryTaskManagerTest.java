@@ -65,6 +65,25 @@ class InMemoryTaskManagerTest {
     }
 
     @Test
+    void removeTaskTest() {
+        Task task1 = new Task("Задача 1", "Тестовая задача 1", 1, Status.NEW);
+        Task task2 = new Task("Задача 2", "Тестовая задача 2", 2, Status.NEW);
+        Task task3 = new Task("Задача 3", "Тестовая задача 3", 3, Status.NEW);
+        manager.addNewTask(task1);
+        manager.addNewTask(task2);
+        manager.addNewTask(task3);
+        manager.getTask(task2.getId());
+        manager.getTask(task3.getId());
+        manager.getTask(task1.getId());
+        assertEquals(3, manager.getHistory().size());
+        manager.removeTask(task2.getId());
+
+        manager.removeTask(task1.getId());
+        manager.removeTask(task3.getId());
+        System.out.println(manager.getHistory());
+    }
+
+    @Test
     void epicCheckStatusTest() {
         Epic epic = new Epic("Epic", "Description");
         int epicId = manager.addEpic(epic);
