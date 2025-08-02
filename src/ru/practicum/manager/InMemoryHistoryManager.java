@@ -24,10 +24,8 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void add(Task task) {
         if (task != null) {
-            if (history.containsKey(task.getId())) {
-                history.remove(task.getId());
-            }
-            linkLast(new Task(task.getName(), task.getDescription(), task.getId(), task.getStatus()));
+            history.remove(task.getId());
+            linkLast(new Node<>(new Task(task.getName(), task.getDescription(), task.getId(), task.getStatus())));
         }
     }
 
@@ -36,19 +34,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         removeNode(history.get(id));
     }
 
-    private void linkLast(Task task) {
-        if (head == null) {
-            Node<Task> newNode = new Node<>(task, null, null);
-            head = newNode;
-            tail = newNode;
-        } else if (head == tail) {
-            tail = new Node<>(task, null, head);
-            head.setNext(tail);
+    private void linkLast(Node<Task> node) {
+        if (tail == null) {
+            head = node;
         } else {
-            tail = new Node<>(task, null, tail);
-            tail.getPrev().setNext(tail);
+            tail.setNext(node);
+            node.setPrev(tail);
         }
-        history.put(task.getId(), tail);
+        tail = node;
+        history.put(node.task.getId(), tail);
     }
 
     private List<Task> getTasks() {
@@ -65,15 +59,15 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (node != null) {
             Node<Task> next = node.getNext();
             Node<Task> prev = node.getPrev();
-            if (head == tail) {
+            if (next == null && prev == null) {
                 head = null;
                 tail = null;
-            } else if (node == head) {
+            } else if (prev == null) {
                 next.setPrev(null);
                 head = next;
-            } else if (node == tail) {
+            } else if (next == null) {
                 prev.setNext(null);
-                tail = node;
+                tail = prev;
             } else {
                 prev.setNext(next);
                 next.setPrev(prev);

@@ -30,7 +30,7 @@ public class InMemoryHistoryManagerTest {
         Task task1 = new Task("Задача 1", "Тестовая задача 1", Status.NEW);
         manager.add(task1);
         manager.remove(task1.getId());
-        assertNotEquals(manager.getHistory().getFirst(), null,
+        assertEquals(manager.getHistory().size(), 0,
                 "Не удаляется единственный элемент.");
     }
 
@@ -77,5 +77,7 @@ public class InMemoryHistoryManagerTest {
         assertEquals(2, manager.getHistory().size());
         assertEquals(task1, manager.getHistory().getFirst());
         assertEquals(task3, manager.getHistory().getLast());
+        manager.remove(task1.getId());
+        manager.remove(task3.getId());
     }
 }

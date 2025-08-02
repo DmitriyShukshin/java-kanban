@@ -6,10 +6,10 @@ public class Node<T> {
     public Node<Task> next;
     public Node<Task> prev;
 
-    public Node(Task task, Node<Task> next, Node<Task> prev) {
+    public Node(Task task) {
         this.task = task;
-        this.next = next;
-        this.prev = prev;
+        this.next = null;
+        this.prev = null;
     }
 
 
